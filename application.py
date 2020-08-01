@@ -8,7 +8,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, ordinal
+from helpers import apology, login_required, lookup, ordinal, convertSQLToDict
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -36,7 +36,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 # DB variable
 # Create engine object to manage connections to DB, and scoped session to separate user interactions with DB
-engine = create_engine(os.getenv("postgres://sumjznccdlzznq:3f1d52a46872bf40a37c9f7a775a6596e4a04c1e3da8be50ab9ef09647cf0ede@ec2-35-175-155-248.compute-1.amazonaws.com:5432/dc6vvaofgcagpo"))
+engine = create_engine("postgres://sumjznccdlzznq:3f1d52a46872bf40a37c9f7a775a6596e4a04c1e3da8be50ab9ef09647cf0ede@ec2-35-175-155-248.compute-1.amazonaws.com:5432/dc6vvaofgcagpo")
 db = scoped_session(sessionmaker(bind=engine))
 
 
@@ -46,10 +46,11 @@ db = scoped_session(sessionmaker(bind=engine))
 #session["friends_id"] = ""
 
 @app.route("/", methods=["GET", "POST"])
-@login_required
-def db():
+def index():
     """Show welcome and recent entries, status etc."""
     if request.method == "POST":
-        db.execute("INSERT INTO test VALUES :a", {"a": request.form.get("a")})
-    table = db.execute("SELECT field FROM test").fetchone[0]
+        db.execute("INSERT INTO test (field) VALUES (:a);", {"a": request.form.get("a")})
+        db.commit()
+        return redirect("/")
+    table = db.execute("SELECT field FROM test;").fetchall()
     return render_template("index.html", table=table)
