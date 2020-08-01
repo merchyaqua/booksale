@@ -34,9 +34,9 @@ app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
+# DB variable
 # Create engine object to manage connections to DB, and scoped session to separate user interactions with DB
-engine = create_engine(os.getenv("DATABASE_URL"))
+engine = create_engine(os.getenv("postgres://sumjznccdlzznq:3f1d52a46872bf40a37c9f7a775a6596e4a04c1e3da8be50ab9ef09647cf0ede@ec2-35-175-155-248.compute-1.amazonaws.com:5432/dc6vvaofgcagpo"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
