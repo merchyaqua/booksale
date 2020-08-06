@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Post
+{% endblock %}
+
+{% block main %}
+
+    <a href='/post' class='nav-link nav-item  pure-menu-link' style='width:fit-content; display:inline; border-left:none; border-bottom: 2px solid blue'>Buy</a>
+    <a href='/post' class='nav-link nav-item  pure-menu-link' style='width:fit-content; display:inline;'>Sell</a>
+    <br><br>
+    <h4>Post your books for sale</h4>
+    <form action="/post" method="post" class="pure-form form-group">
+        <table class='table table-bordered'  style='text-align: left'>
+            <div id='form'>
+            <tr>
+                <th>
+                    Form:
+                </th>
+                <td><input type='checkbox' name='form' value='1'>1</input></td>
+                <td><input type='checkbox' name='form' value='2'>2</input></td>
+                <td><input type='checkbox' name='form' value='3'>3</input></td>
+                <td><input type='checkbox' name='form' value='4'>4</input></td>
+                <td><input type='checkbox' name='form' value='5'>5</input></td>
+                <td><input type='checkbox' name='form' value='6'>6</input></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr><tr></div>
+            <div id='subject'>
+                <th>
+                    Subject:
+                </th>
+                <td><input type='checkbox' name='subject' value='Chinese'>Chinese</input></td>
+                <td><input type='checkbox' name='subject' value='English'>English</input></td>
+                <td><input type='checkbox' name='subject' value='Math'>Math</input></td>
+                <td><input type='checkbox' name='subject' value='JS'>JS</input></td>
+                <td><input type='checkbox' name='subject' value='History'>History</input></td>
+                <td><input type='checkbox' name='subject' value='Music'>Music</input></td>
+                <td><input type='checkbox' name='subject' value='Lit. in Eng.'>Lit. in Eng.</input></td><td><input type='checkbox' value='Chi. Hist.'>Chi. Hist.</input></td>
+                <td><input type='checkbox' name='subject' value='EPA'>EPA</input></td>
+                <td></td></tr>
+                <td></td>
+                <td><input type='checkbox' name='subject' value='Geography'>Geography</input></td>
+                <td>
+                <input type='checkbox' name='subject' value='Physics'>Physics</input></td>
+                <td>
+                <input type='checkbox' name='subject' value='Chemistry'>Chemistry</input></td>
+                <td><input type='checkbox' name='subject' value='Biology'>Biology</input></td>
+                <td><input type='checkbox' name='subject' value='ICT'>ICT</input></td>
+                <td><input type='checkbox' name='subject' value='Economics'>Economics</input></td>
+                <td><input type='checkbox' name='subject' value='BAFS'>BAFS</input><td><input type='checkbox' name='subject' value='LS'>LS</input></td>
+                <td><input type='checkbox' name='subject' value='M1'>M1</input></td><td><input type='checkbox' name='subject' value='M2'>M2</input></td></div>
+            </tr>
+        </table>
+        <div class="form-group"><label for='input'></label>
+            <input autocomplete="off" id="title" autofocus type="text" class="form-control" name='title'placeholder="A title" />
+            <textarea id="description" autocomplete="off" autofocus rows='10' class="form-control" name='description' placeholder="Description(optional)"></textarea><br><br>
+            <input autocomplete="off" id="link" autofocus type="text" class="form-control" name='link' placeholder="Link to Spreadsheet(if any)" />
+            <input autocomplete="off" id="contact" autofocus type="text" class="form-control" name='contact' placeholder="Contact info" />
+            <br>
+            <br>
+            <button type="submit" disabled id="submit" class="btn btn-success"  style="background-color: #1678ff" >Post</button>
+    </form>
+    <script>
+        document.querySelector("#submit").onclick = function (){
+            if (document.querySelector("#").value === '' || document.querySelector("#p").value === '' || document.querySelector("#p2").value === ''){
+
+            alert("Please fill in all 3 ._.");
+                return false;
+            }
+            if (document.querySelector("#p").value !== document.querySelector("#p2").value){
+                alert("Passwords don't match @_@");
+                return false;
+            }
+            if (document.querySelector("#p").value !== document.querySelector("#p2").value){
+                alert("Password has to be at least 8 characters :0.");
+                return false;
+
+            }
+        }
+    </script>
+{% endblock %}

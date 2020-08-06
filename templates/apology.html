@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Oops.. error {{ code }}
+{% endblock %}
+
+{% block main %}
+    {% if code == 500 %}
+
+    Sorry oh my mistake. I deeply apologise🥺 <br>Thanks for triggering a bug. Please report it to me at s2018122@mcs.edu.hk/merchyaqua@gmail.com and I'll fix it, ok?🙇‍♀️
+    {% elif message == 'NOL' %}
+            🙁<br>
+        Sorry, your email is not on our list yet. It might take a while to be updated. <br>
+        If you cannot see a different page containing a register form after 24 hours, please email s2018122@gmail.com.
+
+    If you believe that there is a problem, please report it to me at s2018122@mcs.edu.hk and I'll fix it for you ;)
+    {% elif code == 404 %}
+        This page does not exist maybe because I haven't done it, hee-hee 😬
+    {% else %}
+    🙁<br>
+    {{ message }} Miss {{ session.first }}. <br>
+    {% endif %}
+
+
+{% endblock %}
