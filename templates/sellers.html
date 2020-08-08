@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Seller Listings<form action="/entries" method="POST" style='display:inline; padding:3px;'>
+    Seller Listings<form action="/sort" method="POST" style='display:inline; padding:3px;'>
                 <select name='sort' class="form-control" id='hist' style='font-size: 70%; height:3%; width:18%;' onchange="this.form.submit()">
-                    <option style='font-style:bold;'disabled selected value=''>Sorting</option>
+                    <option name='page' style='font-style:bold;'disabled selected value='sellers'>Sorting</option>
                     <option value='ASC'>Recents first</option>
-                    <option value='DESC'>Oldests first</option>
+					<option value='DESC'>Oldests first</option>
+					
                 </select>
     <form action='/entries'></form>
         </form>
@@ -13,46 +14,32 @@
 
 {% block main %}
 
-    <table class="table table-bordered table-striped" style="border-collapse:collapse; background-color: #F0EFF9">
+    <table class="table table-bordered" style="border-collapse:collapse; background-color: #ffffff46">
 	    <thead>
-	        <tr id='myHeader'>
+	        <tr id='Header' style='background-color: #b4dbff46'>
 	            <th>Form</th>
 	            <th>Subject(s)</th>
 	            <th>Title</th>
 	            <th>Link</th>
 	            <th>Seller</th>
-	            <th>Contact</th>
+				<th>Contact</th>
+				<th colspan="2"></th>
 	        </tr>
 	    </thead>
 	    <tbody>
 
-            {% set i = 1 %}
             {% for row in table %}
-            {% set i = i + 1 %}
-    		<tr data-toggle="collapse" data-target="#demo{{i}}"  class="accordion-toggle">
+    		<tr>
 	            <td>{{ row['form'] }}</td>
 	            <td>{{ row['subject'] }}</td>
 	            <td>{{ row['title'] }}</td>
 	            <td><a href='{{ row["link"] }}'>{{ row["link"] }}</a></td>
 	            <td>{{ row['seller'] }}</td>
 				<td>{{ row['contact'] }}</td>
-				<td><button></button></td>
-				<td><button href='/posts/{{ row["postid"] }}'>View</button></td>
-	        </tr>
-	        <tr>
-	            <td colspan="6" class="hiddenRow">
-		            <div class="collapse" style='padding:0px' id="demo{{i}}">
-		            	<p>{{ row["description"] }}</p>
-		        	</div>
-	        	</td>
+				<td><button class='btn btn-outline-primary' href='/posts/{{ row["postid"] }}'>View</button></td>
+				<td><button class='btn btn-outline-warning btn-toolbar'>Save</button></td>
 	        </tr>
             {% endfor %}
 	    </tbody>
 	</table>
-	<script>$('.accordion-toggle').click(function(){
-	$('.hiddenRow').hide();
-	$(this).next('tr').find('.hiddenRow').show();
-});
-	
-</script>
 {% endblock %}

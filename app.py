@@ -138,7 +138,6 @@ def sellers():
             full = f"{row['id']} {seller['username']} {seller['first']} {seller['last']}"
 
         row.update({"seller": full})
-    print(table)
     return render_template("sellers.html", table=table)
 
 
@@ -153,7 +152,11 @@ def viewpost(postid):
 
     return
 
-
+@app.route('/sort', methods=["POST"])
+@login_required
+def sort():
+    page = request.form.get("page")
+    return redirect("")
 
 
 
