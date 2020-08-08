@@ -70,8 +70,7 @@ def account():
 
         #if request.form.get("status"):db.execute("UPDATE users SET status = 'PRIV' WHERE id = :u", u=session["user_id"])
         if pw:
-            rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          {'username':session["username"]}).fetchall()
+            rows = db.execute("SELECT * FROM users WHERE username = :username", {'username':session["username"]}).fetchall()
             # Ensure username exists and password is correct
             if not check_password_hash(rows[0]["hash"], request.form.get("old")):
                 flash("Old password incorrect :/")
@@ -127,7 +126,7 @@ def post():
     return render_template("post.html")
 
 
-@app.route("/sellers")
+@app.route("/posts/sellers")
 @login_required
 def sellers():
     table = convertSQLToDict(db.execute("SELECT * FROM posts WHERE buyorsell = 'sell' ORDER BY postid DESC LIMIT 50").fetchall())
@@ -143,12 +142,16 @@ def sellers():
     return render_template("sellers.html", table=table)
 
 
-@app.route("/buyers")
+@app.route("/posts/buyers")
 @login_required
 def buyers():
     return
 
+@app.route('/posts/<postid>')
+@login_required
+def viewpost(postid):
 
+    return
 
 
 

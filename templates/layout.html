@@ -2,99 +2,132 @@
 
 <html lang="en">
 
-    <head>
+<head>
 
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
-        <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
+        integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+    <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- icon i drew :) -->
-        <link rel="shortcut icon" href="/static/favicon.ico">
-        <link rel="icon" href="/static/favicon.ico">
-        <link href="/static/styles.css" rel="stylesheet">
+    <!-- icon i drew :) -->
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <link rel="icon" href="/static/favicon.ico">
+    <link href="/static/styles.css" rel="stylesheet">
 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-        <script src="/static/script.js"></script>
-        <title>MCS BOOK SALE</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/static/script.js"></script>
+    <title>MCS BOOK SALE</title>
 
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-md navbar-light" style='border-bottom: 4px solid #D7D7D6;
+</head>
+
+<body>
+    <div  id="navbar">
+    <nav id='nav' class="navbar navbar-expand-md navbar-light" style='border-bottom: 4px solid #D7D7D6;
   background-color: #F7F4F3;'>
-            <a class="navbar-brand" href="/"><img src='/static/fav.gif' style='height: 50px;  ' class='img-fluid'>MCS Book Sale</a>
-            <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
-                <span class="navbar-toggler-icon" ></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbar">
-                {% if session.user_id %}
-                    <ul class="navbar-nav mr-auto mt-2 ">
-                        <li class="nav-item"><a class="nav-link  pure-menu-link" style='padding-left:20px;padding-right:20px;'  href="/post">Post</a></li>
-                        <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/sellers">Seller Listings</a></li>
-                        <li class="nav-item"><a class="nav-link  pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/buyers">Buyer Requests</a></li>
-                        <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/booklists">Current Booklists</a></li>
-                        <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/search_d">Search</a></li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto mt-2">
-                        <li class="pure-menu-link" style='padding-left:20px;padding-right:20px; color: #1688B6'id="name">Hi, {{ session.first }}!</li>
-                        <li class='nav-item nav-link'><div class="dropdown">
-                          <div class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="navbar-brand" href="/"><img src='/static/fav.gif' style='height: 50px;  ' class='img-fluid'>MCS Book
+            Sale</a>
+        <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+            data-target="#navbar" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            {% if session.user_id %}
+            <ul class="navbar-nav mr-auto mt-2 ">
+                <li class="nav-item"><a class="nav-link  pure-menu-link" style='padding-left:20px;padding-right:20px;'
+                        href="/post">Post</a></li>
+                <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;'
+                        href="/sellers">Seller Listings</a></li>
+                <li class="nav-item"><a class="nav-link  pure-menu-link" style='padding-left:20px;padding-right:20px;'
+                        href="/buyers">Buyer Requests</a></li>
+                <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;'
+                        href="/booklists">Current Booklists</a></li>
+                <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;'
+                        href="/search_d">Search</a></li>
+            </ul>
+            <ul class="navbar-nav ml-auto mt-2">
+                <li class="pure-menu-link" style='padding-left:20px;padding-right:20px; color: #1688B6' id="name">Hi,
+                    {{ session.first }}!</li>
+                <li class='nav-item nav-link'>
+                    <div class="dropdown">
+                        <div class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
                             View
-                          </div>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        </div>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <button id='d' class="dropdown-item" onclick="d()">Dark</a>
-                            <button id='l' class="dropdown-item" onclick="l()">Light</a>
-                          </div>
-                        </div></li>
-                        <li class='nav-item nav-link'><div class="dropdown">
-                          <div class="dropdown-toggle" href="/help" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button id='l' class="dropdown-item" onclick="l()">Light</a>
+                        </div>
+                    </div>
+                </li>
+                <li class='nav-item nav-link'>
+                    <div class="dropdown">
+                        <div class="dropdown-toggle" href="/help" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Help
-                          </div>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        </div>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="/help#">Contact</a>
                             <a class="dropdown-item" href="/help#faq">FAQ</a>
-                          </div>
-                        </div></li>
-                        <li class="nav-item"><a class="nav-link pure-menu-link" href="/account">My Account</a></li>
-                        <li class="nav-item"><a class="nav-link pure-menu-link" href="/logout">Log Out</a></li>
-                    </ul>
-                {% else %}
-                    <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/help">Help</a></li>
-                        <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/register">Register</a></li>
-                        <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/login">Log In</a></li>
-                    </ul>
-                {% endif %}
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link pure-menu-link" href="/account">My Account</a></li>
+                <li class="nav-item"><a class="nav-link pure-menu-link" href="/logout">Log Out</a></li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav ml-auto mt-2">
+                <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;'
+                        href="/help">Help</a></li>
+                <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;'
+                        href="/register">Register</a></li>
+                <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;'
+                        href="/login">Log In</a></li>
+            </ul>
+            {% endif %}
 
-            </div>
-        </nav>
-        <!--{% if session.user_id %}
+        </div>
+    </nav><br></div>
+    <!--{% if session.user_id %}
         <button><img href='/static/arrow.jpg' style="background-color: none; height:auto; width:auto;"></button>
         {% endif %} -->
-        {% if get_flashed_messages() %}
-            <header>
-                <div class="alert alert-warning border text-center" role="alert">
-                    {{ get_flashed_messages() | join(" ") }}
-                </div>
-            </header>
-        {% endif %}
+    {% if get_flashed_messages() %}
+    <header>
+        <div class="alert alert-warning border text-center" role="alert">
+            {{ get_flashed_messages() | join(" ") }}
+        </div>
+    </header>
+    {% endif %}
 
-        <main class="container p-5">
+    <main class="container p-5">
         <h1>{% block title %}{% endblock %}</h1>
-            {% block main %}{% endblock %}
-        </main>
+        {% block main %}{% endblock %}
+    </main>
 
-        <footer class="small text-center muted" style="color: #3F403A; padding-bottom: 20px">
-            Styled using <a href="https://bootswatch.com/">Bootswatch themes</a> with <a href="https://getbootstrap.com/">Bootstrap </a>. Colors by <a href="https://coolors.co/">Coolors.co.</a>
-        </footer>
+    <footer class="small text-center muted" style="color: #3F403A; padding-bottom: 20px">
+        Styled using <a href="https://bootswatch.com/">Bootswatch themes</a> with <a
+            href="https://getbootstrap.com/">Bootstrap </a>. Colors by <a href="https://coolors.co/">Coolors.co.</a>
+    </footer>
 
-    </body>
-    <script>
+</body>
+<script>
+    window.onscroll = function () { myFunction() };
 
-    </script>
+    var nav = document.getElementById("navbar");
+    var sticky = nav.offsetTop;
+
+    function myFunction() {
+        if (window.pageYOffset > sticky) {
+            nav.classList.add("sticky");
+        } else {
+            nav.classList.remove("sticky");
+        }
+    }
+</script>
+
 </html>

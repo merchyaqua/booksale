@@ -35,7 +35,9 @@
 	            <td>{{ row['title'] }}</td>
 	            <td><a href='{{ row["link"] }}'>{{ row["link"] }}</a></td>
 	            <td>{{ row['seller'] }}</td>
-	            <td>{{ row['contact'] }}</td>
+				<td>{{ row['contact'] }}</td>
+				<td><button></button></td>
+				<td><button href='/posts/{{ row["postid"] }}'>View</button></td>
 	        </tr>
 	        <tr>
 	            <td colspan="6" class="hiddenRow">
@@ -51,17 +53,6 @@
 	$('.hiddenRow').hide();
 	$(this).next('tr').find('.hiddenRow').show();
 });
-	window.onscroll = function() {myFunction()};
-
-	var header = document.getElementById("myHeader");
-	var sticky = header.offsetTop;
-
-	function myFunction() {
-	  if (window.pageYOffset > sticky) {
-	    header.classList.add("sticky");
-	  } else {
-	    header.classList.remove("sticky");
-	  }
-	}
+	
 </script>
 {% endblock %}
