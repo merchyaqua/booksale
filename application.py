@@ -121,7 +121,7 @@ def post():
         u = session["user_id"]
         # insert
         db.execute("INSERT INTO posts (id, form, subject, description, link, contact, title) VALUES (:i, :f, :s, :d, :l, :c, :t)", 
-        {'i': session["user_id"], 'f':f, 's':s, 'd':request.form.get("description"), 'l':request.form.get("link"), 'c':request.form.get("contact"), t=request.form.get("title")})
+        {'i': session["user_id"], 'f':f, 's':s, 'd':request.form.get("description"), 'l':request.form.get("link"), 'c':request.form.get("contact"), 't':request.form.get("title")})
         print("Entry inserted.")
         return redirect("/entries")
     return render_template("post.html")
