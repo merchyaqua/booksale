@@ -5,13 +5,19 @@
 {% endblock %}
 
 {% block main %}
-
-    <a href='/post' class='nav-link nav-item  pure-menu-link' style=' display:inline; border-left:none; border-bottom: 2px solid blue'>Buy</a>
-    <a href='/post' class='nav-link nav-item  pure-menu-link' style=' display:inline;'>Sell</a>
+    {% if bos == 'buy' %}
+    <a href='/post/buy' class='nav-link nav-item  pure-menu-link' style='display:inline; border-left:none; color:black' active>Buy</a>
+    <a href='/post/sell' class='nav-link nav-item  pure-menu-link' style='display:inline; color:gray'>Sell</a>
     <br><br>
     <h4>Post your books for sale</h4>
+    {% else %}
+    <a href='/post/buy' class='nav-link nav-item  pure-menu-link' style=' display:inline; border-left:none;'>Buy</a>
+    <a href='/post/sell' class='nav-link nav-item  pure-menu-link' style=' display:inline; padding-left: 10px; color:rgb(0, 0, 0)'>Sell</a>
+    <br><br>
+    <h4>Post your books for sale</h4>
+    {% endif %}
     <form action="/post" method="post" class="pure-form form-group">
-        <table class='table table-bordered'  style='text-align: left'>
+        <table class='table table-sm'  style='text-align: left'>
             <div id='form'>
             <tr>
                 <th>

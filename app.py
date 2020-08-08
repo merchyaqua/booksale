@@ -103,10 +103,17 @@ def account():
     length = db.execute("SELECT length FROM users WHERE id = :u", {'u':session["user_id"]}).fetchone()[0]
     return render_template("account.html", u=session["user_id"], stars="*" * length)#, status=status[0]["status"]
 
-@app.route("/post", methods=["GET", "POST"])
+@app.route("/post", methods=["GET"])
 @login_required
-def post():
-    """New Entries"""
+def p():
+    return render_template("p.html")
+
+
+
+@app.route("/post/<buyorsell>", methods=["GET", "POST"])
+@login_required
+def post(buyorsell):
+    """New Post"""
     if request.method == "POST":
         forms = request.form.getlist("form")
         subjects = request.form.getlist("subject")
@@ -119,11 +126,11 @@ def post():
         # if no title, replace with /
         u = session["user_id"]
         # insert
-        db.execute("INSERT INTO posts (id, form, subject, description, link, contact, title) VALUES (:i, :f, :s, :d, :l, :c, :t)", 
-        {'i': session["user_id"], 'f':f, 's':s, 'd':request.form.get("description"), 'l':request.form.get("link"), 'c':request.form.get("contact"), 't':request.form.get("title")})
+        db.execute("INSERT INTO posts (buyorsell, id, form, subject, description, link, contact, title) VALUES (:b, :i, :f, :s, :d, :l, :c, :t)", 
+        {'b':buyorsell,'i': session["user_id"], 'f':f, 's':s, 'd':request.form.get("description"), 'l':request.form.get("link"), 'c':request.form.get("contact"), 't':request.form.get("title")})
         print("Entry inserted.")
         return redirect("/entries")
-    return render_template("post.html")
+    return render_template("post.html", bos=buyorsell)
 
 
 @app.route("/posts/sellers")
