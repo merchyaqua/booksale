@@ -16,19 +16,19 @@
     <br><br>
     <h4>Post your books for sale</h4>
     {% endif %}
-    <form action="/post" method="post" class="pure-form form-group">
+    <form action="/post/{{ bos }}" method="post" class="pure-form form-group">
         <table class='table table-sm'  style='text-align: left'>
             <div id='form'>
             <tr>
                 <th>
                     Form:
                 </th>
-                <td><input type='checkbox' name='form' value='1'>1</input></td>
-                <td><input type='checkbox' name='form' value='2'>2</input></td>
-                <td><input type='checkbox' name='form' value='3'>3</input></td>
-                <td><input type='checkbox' name='form' value='4'>4</input></td>
-                <td><input type='checkbox' name='form' value='5'>5</input></td>
-                <td><input type='checkbox' name='form' value='6'>6</input></td>
+                <td><input type='checkbox' name='form' value='1'>1</td>
+                <td><input type='checkbox' name='form' value='2'>2</td>
+                <td><input type='checkbox' name='form' value='3'>3</td>
+                <td><input type='checkbox' name='form' value='4'>4</td>
+                <td><input type='checkbox' name='form' value='5'>5</td>
+                <td><input type='checkbox' name='form' value='6'>6</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -38,67 +38,35 @@
                 <th>
                     Subject:
                 </th>
-                <td><input type='checkbox' name='subject' value='Chinese'>Chinese</input></td>
-                <td><input type='checkbox' name='subject' value='English'>English</input></td>
-                <td><input type='checkbox' name='subject' value='Math'>Math</input></td>
-                <td><input type='checkbox' name='subject' value='JS'>JS</input></td>
-                <td><input type='checkbox' name='subject' value='History'>History</input></td>
-                <td><input type='checkbox' name='subject' value='Music'>Music</input></td>
-                <td><input type='checkbox' name='subject' value='Lit. in Eng.'>Lit. in Eng.</input></td><td><input type='checkbox' value='Chi. Hist.'>Chi. Hist.</input></td>
-                <td><input type='checkbox' name='subject' value='EPA'>EPA</input></td>
+                <td><input type='checkbox' name='subject' value='Chinese'>Chinese</td>
+                <td><input type='checkbox' name='subject' value='English'>English</td>
+                <td><input type='checkbox' name='subject' value='Math'>Math</td>
+                <td><input type='checkbox' name='subject' value='JS'>JS</td>
+                <td><input type='checkbox' name='subject' value='History'>History</td>
+                <td><input type='checkbox' name='subject' value='Music'>Music</td>
+                <td><input type='checkbox' name='subject' value='Lit. in Eng.'>Lit. in Eng.</td><td><input type='checkbox' value='Chi. Hist.'>Chi. Hist.</td>
+                <td><input type='checkbox' name='subject' value='EPA'>EPA</td>
                 <td></td></tr>
                 <td></td>
-                <td><input type='checkbox' name='subject' value='Geography'>Geography</input></td>
+                <td><input type='checkbox' name='subject' value='Geography'>Geography</td>
                 <td>
-                <input type='checkbox' name='subject' value='Physics'>Physics</input></td>
+                <input type='checkbox' name='subject' value='Physics'>Physics</td>
                 <td>
-                <input type='checkbox' name='subject' value='Chemistry'>Chemistry</input></td>
-                <td><input type='checkbox' name='subject' value='Biology'>Biology</input></td>
-                <td><input type='checkbox' name='subject' value='ICT'>ICT</input></td>
-                <td><input type='checkbox' name='subject' value='Economics'>Economics</input></td>
-                <td><input type='checkbox' name='subject' value='BAFS'>BAFS</input><td><input type='checkbox' name='subject' value='LS'>LS</input></td>
-                <td><input type='checkbox' name='subject' value='M1'>M1</input></td><td><input type='checkbox' name='subject' value='M2'>M2</input></td></div>
+                <input type='checkbox' name='subject' value='Chemistry'>Chemistry</td>
+                <td><input type='checkbox' name='subject' value='Biology'>Biology</td>
+                <td><input type='checkbox' name='subject' value='ICT'>ICT</td>
+                <td><input type='checkbox' name='subject' value='Economics'>Economics</td>
+                <td><input type='checkbox' name='subject' value='BAFS'>BAFS<td><input type='checkbox' name='subject' value='LS'>LS</td>
+                <td><input type='checkbox' name='subject' value='M1'>M1</td><td><input type='checkbox' name='subject' value='M2'>M2</td></div>
             </tr>
         </table>
-        <div class="form-group"><label for='input'></label>
-            <input autocomplete="off" id="title" autofocus type="text" class="form-control" name='title'placeholder="A title" />
-            <textarea id="description" autocomplete="off" autofocus rows='10' class="form-control" name='description' placeholder="Description(optional)"></textarea><br><br>
-            <input autocomplete="off" id="link" autofocus type="text" class="form-control" name='link' placeholder="Link to Spreadsheet(if any)" />
-            <input autocomplete="off" id="contact" autofocus type="text" class="form-control" name='contact' placeholder="Contact info" />
+        <div class="form-group">
+            <input autocomplete="off" id="title" autofocus type="text" class="form-control" name='title' placeholder="A Catchy title" required {% if bos == 'sell' %}value="Cheap books for sale"{% else %}value="Anyone selling"{% endif %} />
+            <textarea id="description" autocomplete="off" autofocus rows='10' class="form-control" name='description' placeholder="Description(optional)/Book name?"></textarea><br><br>
+            <input autocomplete="off" id="link" autofocus type="url" class="form-control" name='link' placeholder="Link to Spreadsheet(if any)" />
+            <input autocomplete="off" id="contact" autofocus type="text" class="form-control" name='contact' placeholder="Contact info" value='Email:{{ id }}' required />
             <br>
             <br>
-            <button type="submit" disabled id="submit" class="btn btn-success"  style="background-color: #1678ff" >Post</button>
+            <button type="submit" id="submit" class="btn btn-success"  style="background-color: #1678ff" >Post</button>
     </form>
-    <script>
-        document.querySelector("#submit").onclick = function (){
-            if (document.querySelector("#").value === '' || document.querySelector("#p").value === '' || document.querySelector("#p2").value === ''){
-
-            alert("Please fill in all 3 ._.");
-                return false;
-            }
-            if (document.querySelector("#p").value !== document.querySelector("#p2").value){
-                alert("Passwords don't match @_@");
-                return false;
-            }
-            if (document.querySelector("#p").value !== document.querySelector("#p2").value){
-                alert("Password has to be at least 8 characters :0.");
-                return false;
-
-            }
-        }
-    </script>
-    <script>
-        window.onscroll = function () { myFunction() };
-    
-        var nav = document.getElementById("nav");
-        var sticky = nav.offsetTop;
-    
-        function myFunction() {
-            if (window.pageYOffset > sticky) {
-                nav.classList.add("sticky");
-            } else {
-                nav.classList.remove("sticky");
-            }
-        }
-    </script>
 {% endblock %}

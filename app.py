@@ -119,18 +119,24 @@ def post(buyorsell):
         subjects = request.form.getlist("subject")
         f = ''
         s = ''
-        for form in forms:
-            f = f + ' ' + form
-        for subject in subjects:
-            s = s + ' ' + subject
-        # if no title, replace with /
+        if len(forms) > 1:
+            for form in forms:
+                f = f + ', ' + form
+        if len(subjects) > 1:
+            for subject in subjects:
+                s = s + ', ' + subject
         u = session["user_id"]
         # insert
         db.execute("INSERT INTO posts (buyorsell, id, form, subject, description, link, contact, title) VALUES (:b, :i, :f, :s, :d, :l, :c, :t)", 
         {'b':buyorsell,'i': session["user_id"], 'f':f, 's':s, 'd':request.form.get("description"), 'l':request.form.get("link"), 'c':request.form.get("contact"), 't':request.form.get("title")})
-        print("Entry inserted.")
-        return redirect("/entries")
-    return render_template("post.html", bos=buyorsell)
+        db.commit()
+        print("Post inserted.")
+        return redirect(f"/post/{buyorsell}")
+    if session["number"]:
+        i = 's' + session["user_id"] + '@mcs.edu.hk'
+    else:
+        i = session["user_id"]
+    return render_template("post.html", bos=buyorsell, id=i)
 
 
 @app.route("/posts/sellers")
@@ -145,19 +151,33 @@ def sellers():
             full = f"{row['id']} {seller['username']} {seller['first']} {seller['last']}"
 
         row.update({"seller": full})
+    print(table)
     return render_template("sellers.html", table=table)
-
 
 @app.route("/posts/buyers")
 @login_required
 def buyers():
-    return
+    table = convertSQLToDict(db.execute("SELECT * FROM posts WHERE buyorsell = 'buy' ORDER BY postid DESC LIMIT 50").fetchall())
+    for row in table:
+        seller = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {"i": row["id"]}).fetchone()
+        if seller['number']:
+            full = f"{row['id']} {seller['username']} {seller['class']} {seller['number']} {seller['first']} {seller['last']}"
+        else:
+            full = f"{row['id']} {seller['username']} {seller['first']} {seller['last']}"
+
+        row.update({"seller": full})
+    print(table)
+    return render_template("sellers.html", table=table)
+
+
 
 @app.route('/posts/<postid>')
 @login_required
 def viewpost(postid):
-
-    return
+    post = db.execute("SELECT * FROM posts WHERE postid = :p", {'p': postid}).fetchall()[0]
+    poster = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {"i": post["id"]}).fetchone()
+    
+    return render_template("view.html", post=post, poster=poster)
 
 @app.route('/sort', methods=["POST"])
 @login_required
@@ -257,9 +277,10 @@ def register():
         pw = request.form.get("password")
         c = request.form.get("confirmation")
         un = request.form.get("username")
+        i = request.form.get("i")
         # Ensure username was unique
 
-        user = db.execute("SELECT * FROM users WHERE username = :username", {'username':un}).fetchone()[0]
+        user = db.execute("SELECT * FROM users WHERE username = :username", {'username':un}).fetchone()
         if user:
             return apology("Username is already taken,", 403)
         elif re.search(" ", un):
@@ -273,10 +294,7 @@ def register():
             return apology("Your password is too short,")
         # database insert
         db.execute("UPDATE users SET username = :u, hash = :p, length = :l WHERE id = :i",
-                   {'u':un, 'p': generate_password_hash(pw) , 'l':len(pw), 'i':user['id']})
-        # Remember which user has logged in
-        session["user_id"] = db.execute("SELECT id FROM users WHERE username = :username",
-                                        {'username':un}).fetchone()[0]
+                   {'u':un, 'p': generate_password_hash(pw) , 'l':len(pw), 'i':i})
 
 
         # setting status of user, by default its public
@@ -287,7 +305,7 @@ def register():
 
         user = db.execute("SELECT * FROM users WHERE username = :username", {'username':un}).fetchall()[0]
         session["username"] = un
-        session["user_id"] = user["user_id"]
+        session["user_id"] = user["id"]
         session["class"] = user["class"]
         session["number"] = user["number"]
         session["first"] = user["first"]

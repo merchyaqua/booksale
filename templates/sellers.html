@@ -1,6 +1,13 @@
 {% extends "layout.html" %}
 
 {% block title %}
+	<a href='#'><button id='back' class='btn btn-info' style='
+		position: fixed; /* Fixed/sticky position */
+		bottom: 70px; /* Place the button at the bottom of the page */
+		left: 80px; /* Place the button 30px from the right */
+		z-index: 99; /* Make sure it does not overlap */
+		cursor: pointer; /* Add a mouse pointer on hover */
+	  '>Back to top</button></a>
     Seller Listings<form action="/sort" method="POST" style='display:inline; padding:3px;'>
                 <select name='sort' class="form-control" id='hist' style='font-size: 70%; height:3%; width:18%;' onchange="this.form.submit()">
                     <option name='page' style='font-style:bold;'disabled selected value='sellers'>Sorting</option>
@@ -36,7 +43,7 @@
 	            <td><a href='{{ row["link"] }}'>{{ row["link"] }}</a></td>
 	            <td>{{ row['seller'] }}</td>
 				<td>{{ row['contact'] }}</td>
-				<td><button class='btn btn-outline-primary' href='/posts/{{ row["postid"] }}'>View</button></td>
+				<td><a class='btn btn-outline-primary' href='/posts/{{ row["postid"] }}'>View</a></td>
 				<td><button class='btn btn-outline-warning btn-toolbar'>Save</button></td>
 	        </tr>
             {% endfor %}
@@ -44,17 +51,17 @@
 	</table>
 
 	<script>
-		window.onscroll = function () { myFunction() };
-	
-		var nav = document.getElementById("nav");
-		var sticky = nav.offsetTop;
-	
-		function myFunction() {
-			if (window.pageYOffset > sticky) {
-				nav.classList.add("sticky");
-			} else {
-				nav.classList.remove("sticky");
-			}
-		}
-	</script>
+        window.onscroll = function () { myFunction() };
+    
+        var nav = document.getElementById("back");
+        var sticky = nav.offsetTop;
+    
+        function myFunction() {
+            if (window.pageYOffset > sticky) {
+                nav.classList.add("sticky");
+            } else {
+                nav.classList.remove("sticky");
+            }
+        }
+    </script>
 {% endblock %}
