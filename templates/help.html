@@ -28,4 +28,19 @@
     <a id='list'></a><h4>Why is my account not on the list yet?</h4>
     Sorry about that, form responses are added to the database manually so please be patient :( Do <a href='/help#'>contact</a> me if you can't register and log in the following day.
     </div>
+
+    <script>
+        window.onscroll = function () { myFunction() };
+    
+        var nav = document.getElementById("navbar");
+        var sticky = nav.offsetTop;
+    
+        function myFunction() {
+            if (window.pageYOffset > sticky) {
+                nav.classList.add("sticky");
+            } else {
+                nav.classList.remove("sticky");
+            }
+        }
+    </script>
 {% endblock %}

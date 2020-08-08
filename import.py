@@ -1,7 +1,6 @@
 import csv
 import re
 from sys import argv
-from cs50 import SQL
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -17,7 +16,7 @@ with open("csvdump/u.csv") as csvfile:
         if re.search(sid, '@mcs.edu.hk'):
             sid = sid.strip("s@mcs.edu.hk")
         else:
-            row.update({"Class/Group": '/', "Number": "/"})
+            row.update({"Class/Group": '/', "Number": None})
 
         exist = db.execute("SELECT * FROM users WHERE id = :i", {"i": sid}).fetchall()
         if exist:
