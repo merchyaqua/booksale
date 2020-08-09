@@ -167,11 +167,12 @@ def buyers():
 
         row.update({"seller": full})
     print(table)
-    return render_template("sellers.html", table=table)
+    return render_template("sellers.html", table=table, bos='buy')
 
 
 
-@app.route('/posts/<postid>')
+
+@app.route('/posts/view/<postid>')
 @login_required
 def viewpost(postid):
     post = db.execute("SELECT * FROM posts WHERE postid = :p", {'p': postid}).fetchall()[0]
@@ -179,13 +180,33 @@ def viewpost(postid):
     
     return render_template("view.html", post=post, poster=poster)
 
-@app.route('/sort', methods=["POST"])
+@app.route('/sort/<page>', methods=["POST"])
 @login_required
-def sort():
-    page = request.form.get("page")
-    return redirect("")
+def sort(page):
+    db.execute("UPDATE users SET sort = :s WHERE id = :i", {'s': request.form.get('sort'), 'i': session["user_id"]})
+    db.commit()
+    return redirect("/posts/" + page)
 
+@app.route('/posts/saved', methods=["GET", "POST"])
+@login_required
+def saved():
+    if request.args.get("id"):
+        page = request.args.get("page")
+        db.execute("INSERT INTO saved VALUES (:i, :p)", {'i': session["user_id"], 'p':request.args.get("id")})
+        db.commit()
+        return redirect("/posts/" + page)
+    table = db.execute("SELECT * FROM posts WHERE postid IN (SELECT postid FROM saved WHERE id = :i)", {'i': session['user_id']}).fetchall()
+    
+    for row in table:
+        seller = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {"i": row["id"]}).fetchone()
+        if seller['number']:
+            full = f"{row['id']} {seller['username']} {seller['class']} {seller['number']} {seller['first']} {seller['last']}"
+        else:
+            full = f"{row['id']} {seller['username']} {seller['first']} {seller['last']}"
 
+        row.update({"seller": full})
+    print(table)
+    return render_template("saved.html", table=table)
 
 
 
@@ -259,9 +280,10 @@ def register():
                 d = e
             try:
                 # if registered
-                user = db.execute("SELECT username FROM users WHERE id = :i", {"i": d}).fetchone()[0].lower()
+                user = db.execute("SELECT username, hash FROM users WHERE id = :i", {"i": d}).fetchone()[0].lower()
+                print(user['hash']) 
                 print("returning apology for existence")
-                return apology(f"Wait...this user is registered on the site as {user}.\n Not you? I'll fix it and investigate🕵️‍♀️(if you wish),", 403)
+                return apology(f"Wait...this user is registered on the site as {user['username']}.\n Not you? I'll fix it and investigate🕵️‍♀️(if you wish),", 403)
             except:
                 # if not on list (NOL) well, not found
                 try:

@@ -29,31 +29,31 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-light" style='border-bottom: 4px solid #D7D7D6;
     background-color: #F7F4F3;'>
-              <a class="navbar-brand" href="/"><img src='/static/fav.gif' style='height: 50px;  ' class='img-fluid'>MCS Book Sale</a>
+              <img src='/static/fav.gif' style='height: 4vw;  ' class='img-fluid'><a class="navbar-brand" href="/">MCS Book Sale</a>
               <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
                   <span class="navbar-toggler-icon" ></span>
               </button>
               <div class="collapse navbar-collapse" id="navbar">
                   {% if session.user_id %}
-                      <ul class="navbar-nav mr-auto mt-2 ">
-                          <li class="nav-item"><a class="nav-link  pure-menu-link" style='padding-left:20px;padding-right:20px;'  href="/post">Post</a></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/posts/sellers">Seller Listings</a></li>
-                          <li class="nav-item"><a class="nav-link  pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/posts/buyers">Buyer Requests</a></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/booklists">Current Booklists</a></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/search_d">Search</a></li>
+                      <ul class="navbar-nav mr-auto mt-2 " >
+                        <li class='nav-item nav-link' style='padding-left:18px;padding-right:18px;' ><div class="dropdown">
+                        <div class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Post
+                        </div>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="/post/buy">Buying Request</a>
+                          <a class="dropdown-item" href="/post/sell">Selling Listing</a>
+                        </div>
+                      </div></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/posts/sellers">Seller Listings</a></li>
+                          <li class="nav-item"><a class="nav-link  pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/posts/buyers">Buyer Requests</a></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/booklists">Booklists 20-21</a></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/posts/saved">Saved Posts</a></li>
                       </ul>
                       <ul class="navbar-nav ml-auto mt-2">
-                          <li class="pure-menu-link" style='padding-left:20px;padding-right:20px; color: #1688B6'id="name">Hi, {{ session.first }}!</li>
-                          <li class='nav-item nav-link'><div class="dropdown">
-                            <div class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              View
-                            </div>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <button id='d' class="dropdown-item" onclick="d()">Dark</a>
-                              <button id='l' class="dropdown-item" onclick="l()">Light</a>
-                            </div>
-                          </div></li>
-                          <li class='nav-item nav-link'><div class="dropdown">
+                          <li class="pure-menu-link navbar-text" style='padding-left:18px;padding-right:18px; color: #1688B6'id="name">Hi, {{ session.first }}!</li>
+                          
+                          <li class='nav-item nav-link' style='padding-left:18px;padding-right:18px;'><div class="dropdown">
                             <div class="dropdown-toggle" href="/help" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               Help
                             </div>
@@ -62,14 +62,14 @@
                               <a class="dropdown-item" href="/help#faq">FAQ</a>
                             </div>
                           </div></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" href="/account">My Account</a></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" href="/logout">Log Out</a></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/account">My Account</a></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/logout">Log Out</a></li>
                       </ul>
                   {% else %}
                       <ul class="navbar-nav ml-auto mt-2">
-                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/help">Help</a></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/register">Register</a></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:20px;padding-right:20px;' href="/login">Log In</a></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/help">Help</a></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/register">Register</a></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/login">Log In</a></li>
                       </ul>
                   {% endif %}
   
@@ -91,7 +91,7 @@
         {% block main %}{% endblock %}
     </main>
 
-    <footer class="small text-center muted" style="color: #3F403A; padding-bottom: 20px">
+    <footer class="small text-center muted" style="color: #3F403A; padding-bottom: 5vh">
         Styled using <a href="https://bootswatch.com/">Bootswatch themes</a> with <a
             href="https://getbootstrap.com/">Bootstrap </a>. Colors by <a href="https://coolors.co/">Coolors.co.</a>
     </footer>

@@ -1,67 +1,59 @@
 {% extends "layout.html" %}
 
 {% block title %}
-	<a href='#'><button id='back' class='btn btn-info' style='
+<a href='#'><button id='back' class='btn btn-info' style='
 		position: fixed; /* Fixed/sticky position */
-		bottom: 70px; /* Place the button at the bottom of the page */
-		left: 80px; /* Place the button 30px from the right */
+		bottom: 4vw;
+		font-size:1vw; /* Place the button at the bottom of the page */
+		left: 5vw; /* Place the button 30px from the right */
 		z-index: 99; /* Make sure it does not overlap */
 		cursor: pointer; /* Add a mouse pointer on hover */
 	  '>Back to top</button></a>
-    Seller Listings<form action="/sort" method="POST" style='display:inline; padding:3px;'>
-                <select name='sort' class="form-control" id='hist' style='font-size: 70%; height:3%; width:18%;' onchange="this.form.submit()">
-                    <option name='page' style='font-style:bold;'disabled selected value='sellers'>Sorting</option>
-                    <option value='ASC'>Recents first</option>
-					<option value='DESC'>Oldests first</option>
-					
-                </select>
-    <form action='/entries'></form>
-        </form>
-{% endblock %}
+	  {% if bos == 'sell' %}
+Seller Listings<form action="/sort/sellers" method="POST" style='display:inline; padding:3px;'>
+	<select name='sort' class="form-control" id='hist' style='font-size: 70%; height:3%; width:18%;'
+		onchange="this.form.submit()">
+		<option name='page' style='font-style:bold;' disabled value='posts/sellers'>Sorting</option>
+		{% else %}
+		Buyer Requests<form action="/sort/buyers" method="POST" style='display:inline; padding:3px;'>
+			<select name='sort' class="form-control" id='hist' style='font-size: 70%; height:3%; width:18%;'
+				onchange="this.form.submit()">
+				<option name='page' style='font-style:bold;' disabled value='posts/buyers'>Sorting</option>{% endif %}
+		
+				<option value='ASC'>Recents first</option>
+		<option value='DESC'>Oldests first</option>
 
-{% block main %}
+	</select></form>
+	{% endblock %}
 
-    <table class="table table-bordered" style="border-collapse:collapse; background-color: #ffffff46">
-	    <thead>
-	        <tr id='Header' style='background-color: #b4dbff46'>
-	            <th>Form</th>
-	            <th>Subject(s)</th>
-	            <th>Title</th>
-	            <th>Link</th>
-	            <th>Seller</th>
-				<th>Contact</th>
-				<th colspan="2"></th>
-	        </tr>
-	    </thead>
-	    <tbody>
+	{% block main %}
 
-            {% for row in table %}
-    		<tr>
-	            <td>{{ row['form'] }}</td>
-	            <td>{{ row['subject'] }}</td>
-	            <td>{{ row['title'] }}</td>
-	            <td><a href='{{ row["link"] }}'>{{ row["link"] }}</a></td>
-	            <td>{{ row['seller'] }}</td>
-				<td>{{ row['contact'] }}</td>
-				<td><a class='btn btn-outline-primary' href='/posts/{{ row["postid"] }}'>View</a></td>
-				<td><button class='btn btn-outline-warning btn-toolbar'>Save</button></td>
-	        </tr>
-            {% endfor %}
-	    </tbody>
+	<table class="table table-bordered"
+		style="border-collapse:collapse; background-color: #ffffff46;  font-size:1.5vw; padding: 0.1vw">
+		<thead>
+			<tr id='Header' style='background-color: #b4dbff46'>
+				<th>Form</th>
+				<th>Subject(s)</th>
+				<th>Title</th>
+				<th>Link</th>
+				<th>Poster</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+
+			{% for row in table %}
+			<tr>
+				<td>{{ row['form'] }}</td>
+				<td>{{ row['subject'] }}</td>
+				<td>{{ row['title'] }}</td>
+				<td><a href='{{ row["link"] }}'>{{ row["link"] }}</a></td>
+				<td>{{ row['seller'] }}</td>
+				<td padding='none'><a class='btn btn-outline-primary btn-sm'
+						href='/posts/view/{{ row["postid"] }}'>View</a><a href='/posts/saved?id={{ row["postid"] }}&page={{ bos }}ers'><button
+						class='btn btn-outline-warning btn-toolbar btn-sm'>Save</button></a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
 	</table>
-
-	<script>
-        window.onscroll = function () { myFunction() };
-    
-        var nav = document.getElementById("back");
-        var sticky = nav.offsetTop;
-    
-        function myFunction() {
-            if (window.pageYOffset > sticky) {
-                nav.classList.add("sticky");
-            } else {
-                nav.classList.remove("sticky");
-            }
-        }
-    </script>
-{% endblock %}
+	{% endblock %}

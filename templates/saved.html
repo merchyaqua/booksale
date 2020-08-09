@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}
+	<a href='#'><button id='back' class='btn btn-info' style='
+		position: fixed; /* Fixed/sticky position */
+		bottom: 4vw;
+		font-size:1vw; /* Place the button at the bottom of the page */
+		left: 5vw; /* Place the button 30px from the right */
+		z-index: 99; /* Make sure it does not overlap */
+		cursor: pointer; /* Add a mouse pointer on hover */
+	  '>Back to top</button></a>
+    Saved Posts<form action="/sort" method="POST" style='display:inline; padding:3px;'>
+                <select name='sort' class="form-control" id='hist' style='font-size: 70%; height:3%; width:18%;' onchange="this.form.submit()">
+                    <option name='page' style='font-style:bold;'disabled value='saved'>Sorting</option>
+                    <option value='ASC'>Recents first</option>
+					<option value='DESC'>Oldests first</option>
+					
+                </select>
+{% endblock %}
+
+{% block main %}
+
+    <table class="table table-bordered" style="border-collapse:collapse; background-color: #ffffff46;  font-size:1.5vw; padding: 0.1vw">
+	    <thead>
+	        <tr id='Header' style='background-color: #b4dbff46'>
+	            <th>Form</th>
+	            <th>Subject(s)</th>
+	            <th>Title</th>
+	            <th>Link</th>
+	            <th>Seller</th>
+				<th></th>
+	        </tr>
+	    </thead>
+	    <tbody>
+
+            {% for row in table %}
+    		<tr>
+	            <td>{{ row['form'] }}</td>
+	            <td>{{ row['subject'] }}</td>
+	            <td>{{ row['title'] }}</td>
+	            <td><a href='{{ row["link"] }}'>{{ row["link"] }}</a></td>
+	            <td>{{ row['seller'] }}</td>
+				<td padding='none'><a class='btn btn-outline-primary btn-sm' href='/posts/view/{{ row["postid"] }}'>View</a></td>
+	        </tr>
+            {% endfor %}
+	    </tbody>
+	</table>
+{% endblock %}
