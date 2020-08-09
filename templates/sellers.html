@@ -49,9 +49,13 @@ Seller Listings<form action="/sort/sellers" method="POST" style='display:inline;
 				<td>{{ row['title'] }}</td>
 				<td><a href='{{ row["link"] }}'>{{ row["link"] }}</a></td>
 				<td>{{ row['seller'] }}</td>
-				<td padding='none'><a class='btn btn-outline-primary btn-sm'
-						href='/posts/view/{{ row["postid"] }}'>View</a><a href='/posts/saved?id={{ row["postid"] }}&page={{ bos }}ers'><button
-						class='btn btn-outline-warning btn-toolbar btn-sm'>Save</button></a></td>
+				<td padding='none'>
+					<a class='btn btn-outline-primary btn-sm' href='/posts/view/{{ row["postid"] }}'>View</a>
+					{% if not row['saved'] %}
+					<a class='btn btn-outline-warning btn-sm' href='/posts/saved?id={{ row["postid"] }}&page={{ bos }}ers'>
+					Save</a>
+					{% endif %}
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>

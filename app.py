@@ -1,6 +1,7 @@
 import os
 import re
-import smtplib, ssl
+import smtplib
+import ssl
 
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
@@ -19,6 +20,8 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Ensure responses aren't cached
+
+
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -36,7 +39,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 # DB variable
 # Create engine object to manage connections to DB, and scoped session to separate user interactions with DB
-engine = create_engine("postgres://sumjznccdlzznq:3f1d52a46872bf40a37c9f7a775a6596e4a04c1e3da8be50ab9ef09647cf0ede@ec2-35-175-155-248.compute-1.amazonaws.com:5432/dc6vvaofgcagpo")
+engine = create_engine(
+    "postgres://sumjznccdlzznq:3f1d52a46872bf40a37c9f7a775a6596e4a04c1e3da8be50ab9ef09647cf0ede@ec2-35-175-155-248.compute-1.amazonaws.com:5432/dc6vvaofgcagpo")
 db = scoped_session(sessionmaker(bind=engine))
 
 
@@ -50,12 +54,11 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     """Show welcome and recent entries, status etc."""
     if request.method == "POST":
-        db.execute("INSERT INTO test (field) VALUES (:a);", {"a": request.form.get("a")})
+        db.execute("INSERT INTO test (field) VALUES (:a);",
+                   {"a": request.form.get("a")})
         db.commit()
         return redirect("/")
     return render_template("index.html")
-
-
 
 
 @app.route("/account", methods=["GET", "POST"])
@@ -70,28 +73,30 @@ def account():
 
         #if request.form.get("status"):db.execute("UPDATE users SET status = 'PRIV' WHERE id = :u", u=session["user_id"])
         if pw:
-            rows = db.execute("SELECT * FROM users WHERE username = :username", {'username':session["username"]}).fetchall()
+            rows = db.execute("SELECT * FROM users WHERE username = :username",
+                              {'username': session["username"]}).fetchall()
             # Ensure username exists and password is correct
             if not check_password_hash(rows[0]["hash"], request.form.get("old")):
                 flash("Old password incorrect :/")
                 return apology("Your password is not correct. Try again!", 403)
                 return redirect("/account")
-            db.execute("UPDATE users SET hash = :p, length = :l WHERE id = :i", {'u':un, 'p': generate_password_hash(pw) ,'l':len(pw), 'i':session['user_id']})
+            db.execute("UPDATE users SET hash = :p, length = :l WHERE id = :i", {
+                       'u': un, 'p': generate_password_hash(pw), 'l': len(pw), 'i': session['user_id']})
             db.commit()
             return redirect('/account')
 
-
-        user = db.execute("SELECT * FROM users WHERE username = :username AND id != :i", {'username':session["username"], 'i':session["user_id"]}).fetchall()
+        user = db.execute("SELECT * FROM users WHERE username = :username AND id != :i",
+                          {'username': session["username"], 'i': session["user_id"]}).fetchall()
         if user:
             return apology("Username is already taken,", 403)
         elif re.search(" ", un):
             return apology("Username must not contain spaces,")
         # Ensure password was up to specs
-        elif len(un) > 15 :
+        elif len(un) > 15:
             return apology("Username is limited to 15 characters,")
-        #else:db.execute("UPDATE users SET status = 'PUB' WHERE id = :u", {'u':session["user_id"]})
+        # else:db.execute("UPDATE users SET status = 'PUB' WHERE id = :u", {'u':session["user_id"]})
         db.execute("UPDATE users SET username = :u, first = :f, last = :l, class = :c, number = :n WHERE id = :i",
-                   {'u':un, 'f': request.form.get("first"), 'l': request.form.get("last"), 'c': request.form.get("class"), 'n':request.form.get("number"), 'i':session['user_id']})
+                   {'u': un, 'f': request.form.get("first"), 'l': request.form.get("last"), 'c': request.form.get("class"), 'n': request.form.get("number"), 'i': session['user_id']})
         db.commit()
         session["username"] = un
         session["first"] = request.form.get("first")
@@ -99,15 +104,17 @@ def account():
         if session["number"]:
             session["class"] = request.form.get("class")
             session["number"] = request.form.get("number")
-        return redirect ("/account")
-    length = db.execute("SELECT length FROM users WHERE id = :u", {'u':session["user_id"]}).fetchone()[0]
-    return render_template("account.html", u=session["user_id"], stars="*" * length)#, status=status[0]["status"]
+        return redirect("/account")
+    length = db.execute("SELECT length FROM users WHERE id = :u", {
+                        'u': session["user_id"]}).fetchone()[0]
+    # , status=status[0]["status"]
+    return render_template("account.html", u=session["user_id"], stars="*" * length)
+
 
 @app.route("/post", methods=["GET"])
 @login_required
 def p():
     return render_template("p.html")
-
 
 
 @app.route("/post/<buyorsell>", methods=["GET", "POST"])
@@ -127,8 +134,8 @@ def post(buyorsell):
                 s = s + ', ' + subject
         u = session["user_id"]
         # insert
-        db.execute("INSERT INTO posts (buyorsell, id, form, subject, description, link, contact, title) VALUES (:b, :i, :f, :s, :d, :l, :c, :t)", 
-        {'b':buyorsell,'i': session["user_id"], 'f':f, 's':s, 'd':request.form.get("description"), 'l':request.form.get("link"), 'c':request.form.get("contact"), 't':request.form.get("title")})
+        db.execute("INSERT INTO posts (buyorsell, id, form, subject, description, link, contact, title) VALUES (:b, :i, :f, :s, :d, :l, :c, :t)",
+                   {'b': buyorsell, 'i': session["user_id"], 'f': f, 's': s, 'd': request.form.get("description"), 'l': request.form.get("link"), 'c': request.form.get("contact"), 't': request.form.get("title")})
         db.commit()
         print("Post inserted.")
         return redirect(f"/post/{buyorsell}")
@@ -142,83 +149,85 @@ def post(buyorsell):
 @app.route("/posts/sellers")
 @login_required
 def sellers():
-    table = convertSQLToDict(db.execute("SELECT * FROM posts WHERE buyorsell = 'sell' ORDER BY postid DESC LIMIT 50").fetchall())
+    table = convertSQLToDict(db.execute(
+        "SELECT * FROM posts WHERE buyorsell = 'sell' ORDER BY postid DESC LIMIT 50").fetchall())
     for row in table:
-        seller = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {"i": row["id"]}).fetchone()
+        seller = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {
+                            "i": row["id"]}).fetchone()
         if seller['number']:
             full = f"{row['id']} {seller['username']} {seller['class']} {seller['number']} {seller['first']} {seller['last']}"
         else:
             full = f"{row['id']} {seller['username']} {seller['first']} {seller['last']}"
+        saved = db.execute("SELECT postid FROM saved WHERE postid = :i AND id = :e", {
+                           'i': row['postid'], 'e': session['user_id']}).fetchone()
 
-        row.update({"seller": full})
+        row.update({"seller": full, "saved": saved})
     print(table)
-    return render_template("sellers.html", table=table)
+    return render_template("sellers.html", table=table, bos='sell')
+
 
 @app.route("/posts/buyers")
 @login_required
 def buyers():
-    table = convertSQLToDict(db.execute("SELECT * FROM posts WHERE buyorsell = 'buy' ORDER BY postid DESC LIMIT 50").fetchall())
+    table = convertSQLToDict(db.execute(
+        "SELECT * FROM posts WHERE buyorsell = 'buy' ORDER BY postid DESC LIMIT 50").fetchall())
     for row in table:
-        seller = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {"i": row["id"]}).fetchone()
+        seller = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {
+                            "i": row["id"]}).fetchone()
         if seller['number']:
             full = f"{row['id']} {seller['username']} {seller['class']} {seller['number']} {seller['first']} {seller['last']}"
         else:
             full = f"{row['id']} {seller['username']} {seller['first']} {seller['last']}"
+    saved = db.execute("SELECT postid FROM saved WHERE postid = :i AND id = :e", {
+                       'i': row['postid'], 'e': session['user_id']}).fetchone()
 
-        row.update({"seller": full})
+    row.update({"seller": full, "saved": saved})
     print(table)
     return render_template("sellers.html", table=table, bos='buy')
-
-
 
 
 @app.route('/posts/view/<postid>')
 @login_required
 def viewpost(postid):
-    post = db.execute("SELECT * FROM posts WHERE postid = :p", {'p': postid}).fetchall()[0]
-    poster = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {"i": post["id"]}).fetchone()
-    
+    post = db.execute("SELECT * FROM posts WHERE postid = :p",
+                      {'p': postid}).fetchall()[0]
+    poster = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {
+                        "i": post["id"]}).fetchone()
+
     return render_template("view.html", post=post, poster=poster)
+
 
 @app.route('/sort/<page>', methods=["POST"])
 @login_required
 def sort(page):
-    db.execute("UPDATE users SET sort = :s WHERE id = :i", {'s': request.form.get('sort'), 'i': session["user_id"]})
+    db.execute("UPDATE users SET sort = :s WHERE id = :i", {
+               's': request.form.get('sort'), 'i': session["user_id"]})
     db.commit()
     return redirect("/posts/" + page)
+
 
 @app.route('/posts/saved', methods=["GET", "POST"])
 @login_required
 def saved():
     if request.args.get("id"):
         page = request.args.get("page")
-        db.execute("INSERT INTO saved VALUES (:i, :p)", {'i': session["user_id"], 'p':request.args.get("id")})
+        db.execute("INSERT INTO saved VALUES (:i, :p)", {
+                   'i': session["user_id"], 'p': request.args.get("id")})
         db.commit()
         return redirect("/posts/" + page)
-    table = db.execute("SELECT * FROM posts WHERE postid IN (SELECT postid FROM saved WHERE id = :i)", {'i': session['user_id']}).fetchall()
-    
+    table = convertSQLToDict(db.execute(
+        "SELECT * FROM posts WHERE postid IN (SELECT postid FROM saved WHERE id = :i)", {'i': session['user_id']}).fetchall())
+
     for row in table:
-        seller = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {"i": row["id"]}).fetchone()
+        seller = db.execute("SELECT username, first, last, class, number FROM users WHERE id = :i", {
+                            "i": row["id"]}).fetchone()
         if seller['number']:
             full = f"{row['id']} {seller['username']} {seller['class']} {seller['number']} {seller['first']} {seller['last']}"
         else:
             full = f"{row['id']} {seller['username']} {seller['first']} {seller['last']}"
 
         row.update({"seller": full})
-    print(table)
     return render_template("saved.html", table=table)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @app.route("/booklists")
@@ -231,6 +240,7 @@ def booklists():
 def helpo():
     return render_template("help.html")
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
@@ -242,10 +252,10 @@ def login():
         # done by javascript disable
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          {'username':request.form.get("username")}).fetchall()
+                          {'username': request.form.get("username")}).fetchall()
         print(rows)
         # Ensure username exists and password is correct
-        if len(rows) != 1 :
+        if len(rows) != 1:
             return apology("Your username is not found,", 403)
         elif not check_password_hash(rows[0]["hash"], request.form.get("password")):
             return apology("Your password is not correct. Try again!", 403)
@@ -258,13 +268,13 @@ def login():
         session["first"] = rows[0]["first"]
         session["last"] = rows[0]["last"]
 
-        print("Logged in " + session["username"] + ", ID " + str(session["user_id"]) + " at " + datetime.now().strftime("%m/%d/%Y %H:%M:%S"))
+        print("Logged in " + session["username"] + ", ID " + str(
+            session["user_id"]) + " at " + datetime.now().strftime("%m/%d/%Y %H:%M:%S"))
         # Redirect user to home page
         return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     return render_template("login.html")
-
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -280,14 +290,16 @@ def register():
                 d = e
             try:
                 # if registered
-                user = db.execute("SELECT username, hash FROM users WHERE id = :i", {"i": d}).fetchone()[0].lower()
-                print(user['hash']) 
+                user = db.execute("SELECT username, hash FROM users WHERE id = :i", {
+                                  "i": d}).fetchone()[0].lower()
+                print(user['hash'])
                 print("returning apology for existence")
                 return apology(f"Wait...this user is registered on the site as {user['username']}.\n Not you? I'll fix it and investigate🕵️‍♀️(if you wish),", 403)
             except:
                 # if not on list (NOL) well, not found
                 try:
-                    user = db.execute("SELECT * FROM users WHERE id = :i", {"i": d}).fetchall()[0]
+                    user = db.execute(
+                        "SELECT * FROM users WHERE id = :i", {"i": d}).fetchall()[0]
                 except:
                     print("returning apology for not on list")
                     return apology("NOL", 404)
@@ -295,20 +307,20 @@ def register():
                 school = re.search(user['id'], '@')
                 return render_template("register.html", user=user, school=school)
 
-
         pw = request.form.get("password")
         c = request.form.get("confirmation")
         un = request.form.get("username")
         i = request.form.get("i")
         # Ensure username was unique
 
-        user = db.execute("SELECT * FROM users WHERE username = :username", {'username':un}).fetchone()
+        user = db.execute(
+            "SELECT * FROM users WHERE username = :username", {'username': un}).fetchone()
         if user:
             return apology("Username is already taken,", 403)
         elif re.search(" ", un):
             return apology("Username must not contain spaces,")
         # Ensure password was up to specs
-        elif len(un) > 15 :
+        elif len(un) > 15:
             return apology("Username is limited to 15 characters,")
         elif c != pw:
             return apology("Passwords don't match,")
@@ -316,16 +328,17 @@ def register():
             return apology("Your password is too short,")
         # database insert
         db.execute("UPDATE users SET username = :u, hash = :p, length = :l WHERE id = :i",
-                   {'u':un, 'p': generate_password_hash(pw) , 'l':len(pw), 'i':i})
-
+                   {'u': un, 'p': generate_password_hash(pw), 'l': len(pw), 'i': i})
 
         # setting status of user, by default its public
         status = request.form.get("status")
         if status == "PRIV":
-             db.execute("UPDATE users SET status = :s WHERE id = :u", {"s": status, "u": session["user_id"]})
+            db.execute("UPDATE users SET status = :s WHERE id = :u",
+                       {"s": status, "u": session["user_id"]})
         db.commit()
 
-        user = db.execute("SELECT * FROM users WHERE username = :username", {'username':un}).fetchall()[0]
+        user = db.execute(
+            "SELECT * FROM users WHERE username = :username", {'username': un}).fetchall()[0]
         session["username"] = un
         session["user_id"] = user["id"]
         session["class"] = user["class"]
@@ -337,19 +350,18 @@ def register():
     return render_template("register.html")
 
 
-
-
-
 @app.route("/logout")
 @login_required
 def logout():
     """Log user out"""
-    print("Logging out " + session["username"] + ", ID " + str(session["user_id"]))
+    print("Logging out " + session["username"] +
+          ", ID " + str(session["user_id"]))
     # Forget any user_id
     session.clear()
     print("Done.")
     # Redirect user to login form
     return redirect("/")
+
 
 def errorhandler(e):
     """Handle error"""
