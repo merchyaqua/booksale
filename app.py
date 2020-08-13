@@ -110,11 +110,17 @@ def account():
     # , status=status[0]["status"]
     return render_template("account.html", u=session["user_id"], stars="*" * length)
 
+@app.route("/welcome", methods=["GET", "POST"])
+@login_required
+def welcome():
+    return render_template("welcome.html")
+
 
 @app.route("/post", methods=["GET"])
 @login_required
 def p():
     return render_template("p.html")
+
 
 
 @app.route("/post/<buyorsell>", methods=["GET", "POST"])
@@ -145,6 +151,15 @@ def post(buyorsell):
         i = session["user_id"]
     return render_template("post.html", bos=buyorsell, id=i)
 
+@app.route("/posts/<username>")
+@login_required
+def profile():
+    return ("profile.html")
+
+@app.route("/search")
+@login_required
+def search():
+    return ("search.html")
 
 @app.route("/posts/sellers")
 @login_required
@@ -346,7 +361,8 @@ def register():
         session["first"] = user["first"]
         session["last"] = user["last"]
         # Redirect user to home page
-        return redirect("/")
+        
+        return redirect("/welcome")
     return render_template("register.html")
 
 

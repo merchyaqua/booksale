@@ -35,7 +35,7 @@
               </button>
               <div class="collapse navbar-collapse" id="navbar">
                   {% if session.user_id %}
-                      <ul class="navbar-nav mr-auto mt-2 " >
+                      <ul class="navbar-nav mr-auto mt-2" >
                         <li class='nav-item nav-link' style='padding-left:18px;padding-right:18px;' ><div class="dropdown">
                         <div class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Post
@@ -45,10 +45,18 @@
                           <a class="dropdown-item" href="/post/sell">Selling Listing</a>
                         </div>
                       </div></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/posts/sellers">Seller Listings</a></li>
-                          <li class="nav-item"><a class="nav-link  pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/posts/buyers">Buyer Requests</a></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/booklists">Booklists 20-21</a></li>
+                      <li class='nav-item nav-link' style='padding-left:18px;padding-right:18px; ' ><div class="dropdown">
+                        <div class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Browse
+                        </div>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="/posts/sellers">Seller Listings</a>
+                          <a class="dropdown-item" href="/posts/buyers">Buyer Requests</a>
+                          <a class="dropdown-item" href="/posts/{{ session.username }}">Your Posts</a>
+                        </div>
+                      </div></li>
                           <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/posts/saved">Saved Posts</a></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/booklists">Booklists</a></li>
                       </ul>
                       <ul class="navbar-nav ml-auto mt-2">
                           <li class="pure-menu-link navbar-text" style='padding-left:18px;padding-right:18px; color: #1688B6'id="name">Hi, {{ session.first }}!</li>
@@ -60,9 +68,10 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                               <a class="dropdown-item" href="/help#">Contact</a>
                               <a class="dropdown-item" href="/help#faq">FAQ</a>
+                              <a class='dropdown-item' href="/welcome">Welcome page</a>
                             </div>
                           </div></li>
-                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/account">My Account</a></li>
+                          <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/account">Account</a></li>
                           <li class="nav-item"><a class="nav-link pure-menu-link" style='padding-left:18px;padding-right:18px;' href="/logout">Log Out</a></li>
                       </ul>
                   {% else %}
@@ -95,7 +104,15 @@
         Styled using <a href="https://bootswatch.com/">Bootswatch themes</a> with <a
             href="https://getbootstrap.com/">Bootstrap </a>. Colors by <a href="https://coolors.co/">Coolors.co.</a>
     </footer>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/7.17.2/firebase-app.js"></script>
 
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="/__/firebase/7.17.2/firebase-analytics.js"></script>
+
+<!-- Initialize Firebase -->
+<script src="/__/firebase/init.js"></script>
 </body>
 
 </html>

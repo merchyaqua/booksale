@@ -18,9 +18,10 @@
 
       Contact: {{ post["contact"] }}
       Posted by {{ poster['first'] }} {{ poster['last'] }}</p>
+      Post link: https://mcsbooksale.herokuapp.com/view/{{ post['postid']}}
     <!-- from w3 
     {% if session.user_id == post["id"] %}
-      <form action='/entries/edit' method='GET' style=' display: inline;'>
+      <form action='/posts/edit' method='GET' style=' display: inline;'>
         <button class='pure-button button-normal' value='{{ ["id"] }}'
           onclick='this.form.submit()' name='edit'>Edit
       </button>
