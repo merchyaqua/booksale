@@ -5,11 +5,16 @@
 {% endblock %}
 
 {% block main %}
- <div class='text'>
-    <br><h3>Welcome back!<br>
-        </h3>
-    No hassle getting your books sold.
-    </div>
+    <h3>Welcome back!</h3><br>
+    {% if amount != 0 %}
+        <p>You have {{ amount }} entr{% if amount == 1%}y{% else %}ies{% endif %}.</p>
+    {% else %}
+        <p>You have no entries yet. Go <a href='new'>create</a> one!</p>
+    {% endif %}
+    {% if not today %}
+        <p>You haven't written today's entry yet. Create it <a href='/new'>here</a>!</p>
+
+    {% endif %}
 
 
 {% endblock %}

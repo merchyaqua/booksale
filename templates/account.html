@@ -4,105 +4,50 @@
 {% endblock %}
 
 {% block main %}
-    <h4>Information</h4>
-    <table class="table names">
-        <form action='/account' method='POST' style='display: inline;'class="form-group">
+    <h4> My account</h4>
+    <table class="table table">
         <tr>
-            <th>ID:</th>
-            <td>
-                {{ session.user_id }}
-            </td>
+            <th>User ID:</th>
+            <td>{{ session.user_id }}</td>
             <td></td>
         </tr>
-        <tr>
-            <th>First Name:</th>
-            <td display='inline'>
-                <input autocomplete="off" autofocus class="form-control" name="first" value="{{ session.first }}" type="text">
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>Last Name:</th>
-            <td><input autocomplete="off" autofocus class="form-control" name="last" value="{{ session.last }}" type="text">
-            </td>
-            <td></td>
-        </tr>
-        {% if session.number %}
-        <tr>
-            <th>Class:</th>
-            <td><input autocomplete="off" autofocus class="form-control" name="class" value="{{ session.class }}" type="text">
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>Number:</th>
-            <td><input autocomplete="off" autofocus class="form-control" name="number" value="{{ session.number }}" type="text">
-            </td>
-            <td></td>
-        </tr>
-        {% endif %}
         <tr>
             <th>Username:</th>
-            <td>
-                <input autocomplete="off" autofocus class="form-control" name="changeun" id='u' onkeyup='d1("#u")'  value="{{ session.username }}" type="text">
+            <td>{{ session.username }}
+
             </td>
-        </tr></table>
-        <div id='nc'>
-            <button id='submit' class="btn button-normal btn-warning" style='display: inline;' type="submit" >Change</button>
-            <a class="btn button-normal btn-secondary" style='display: inline;' href='/account' >Cancel</a>
-        </div>
-    </form ><br><br><br>
-    <h4>Password</h4>
-    <table class="table pass">
-        <form action='/account' method='POST' style='display: inline;'class="form-group">
+            <td>
+            <form action='/account' method='POST' style='display: inline;'class="pure-form">
+                <input autocomplete="off" autofocus class="pure-input-1-2" name="changeun" id='u' onkeyup='d1("#u")'  placeholder="New name(max. 15)" type="text">
+                    <button id='submit' class="btn button-normal pure-button" style='display: inline;' type="submit" disabled>Change</button>
+                </form>
+                </td>
+        </tr>
         <tr>
             <th>Password:</th>
             <td>{{ stars }}</td>
             <td>
-            </td>
+                <form action='/account' method='POST' style='display: inline;'class="pure-form">
+                <input autocomplete="off" autofocus class="pure-input-1-2" name="changepw" id='p' onkeyup='cutie()' placeholder="New password" type="text">
+                    <button id='submit2' class="btn button-normal pure-button" style='display: inline;' type="submit" disabled>Change</button>
+                </form>
+                </td>
             <td>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <input autocomplete="off" autofocus class="form-control" name="old" id='o' placeholder="Old password" type="password">
-            </td>
-        </tr>
-        <tr>
-            <th>
-            </th>
-            <td><input autocomplete="off" autofocus class="form-control" name="changepw" id='p' placeholder="New password" type="password">
-            </td>
-        </tr>
-        <tr>
-            <th></th>
-            <td  border="none"><input autocomplete="off" autofocus class="form-control" name="changepw2" id='p2' placeholder="Confirm new password" type="password">
-            </td>
-        </tr>
 
+            </td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>Private:</td>
+            <td>
+                <form action='/account' style='display: inline;' method='post' class="pure-form" >
+                {% if status == "PRIV" %}
+                    <input name="status" type="checkbox" value="PRIV" name="status" checked onchange="this.form.submit()">
+                {% else %}
+                    <input name="status" type="checkbox" value="PRIV" name="status" onchange="this.form.submit()">
+                {% endif %}
+                </form>
+            </td>
+        </tr>
     </table>
-    <div>
-    <button id='submitp' class="btn button-normal btn-warning" type="submit" style='display: inline;' >Change</button>
-    <a class="btn button-normal btn-secondary"  href='/account' >Cancel</a>
-    </form></div>
-    <script>
-        document.querySelector("#submitp").onclick = function (){
-            if (document.querySelector("#o").value === '' || document.querySelector("#p").value === '' || document.querySelector("#p2").value === ''){
-
-            alert("Please fill in all 3 ._.");
-                return false;
-            }
-            if (document.querySelector("#p").value !== document.querySelector("#p2").value){
-                alert("Passwords don't match @_@");
-                return false;
-            }
-            if (document.querySelector("#p").value !== document.querySelector("#p2").value){
-                alert("Password has to be at least 8 characters :0.");
-                return false;
-
-            }
-        }
-    </script>
-    
 {% endblock %}

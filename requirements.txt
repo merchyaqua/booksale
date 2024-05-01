@@ -1,7 +1,4 @@
 cs50
-gunicorn
-psycopg2
-SQLAlchemy
 Flask
 Flask-Session
 requests

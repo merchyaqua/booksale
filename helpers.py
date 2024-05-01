@@ -1,8 +1,8 @@
 import os
 import requests
 import urllib.parse
-import decimal
-from flask import redirect, render_template, request, session, flash
+
+from flask import redirect, render_template, request, session
 from functools import wraps
 
 
@@ -18,7 +18,7 @@ def apology(message, code=400):
                          ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
             s = s.replace(old, new)
         return s
-    return render_template("apology.html", code=code, message=message)
+    return render_template("apology.html", top=code, bottom=escape(message)), code
 
 
 def login_required(f):
@@ -33,6 +33,29 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
+
+
+def lookup(symbol):
+    """Look up quote for symbol."""
+
+    # Contact API
+    try:
+        api_key = os.environ.get("API_KEY")
+        response = requests.get(f"https://cloud-sse.iexapis.com/stable/stock/{urllib.parse.quote_plus(symbol)}/quote?token={api_key}")
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+
+    # Parse response
+    try:
+        quote = response.json()
+        return {
+            "name": quote["companyName"],
+            "price": float(quote["latestPrice"]),
+            "symbol": quote["symbol"]
+        }
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 def usd(value):
@@ -90,28 +113,6 @@ def ordinal(value):
 
     return ordval
 
-# Converts a list of SQL Alchemy RowProxy objects into a list of dictionary objects with the column name as the key (https://github.com/cs50/python-cs50/blob/develop/src/cs50/sql.py#L328)
-# Used for SQL SELECT .fetchall() results
-def convertSQLToDict(listOfRowProxy):
-    # Coerce types
-    rows = [dict(row) for row in listOfRowProxy]
-    for row in rows:
-        for column in row:
-
-            # Coerce decimal.Decimal objects to float objects
-            # https://groups.google.com/d/msg/sqlalchemy/0qXMYJvq8SA/oqtvMD9Uw-kJ
-            if type(row[column]) is decimal.Decimal:
-                row[column] = float(row[column])
-
-            # Coerce memoryview objects (as from PostgreSQL's bytea columns) to bytes
-            elif type(row[column]) is memoryview:
-                row[column] = bytes(row[column])
-
-    return rows
-
-
-
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-
