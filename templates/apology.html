@@ -1,9 +1,26 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Apology
+    Oops.. error {{ code }}
 {% endblock %}
 
 {% block main %}
-    <img alt="{{ top }}" class="border" src="http://memegen.link/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?alt=https://i.imgur.com/CsCgN7Ll.png" title="{{ top }}">
+    {% if code == 500 %}
+
+    Sorry oh my mistake. I deeply apologise🥺 <br>Thanks for triggering a bug. Please <a href='/help'>report it to me</a> and I'll fix it, ok?🙇‍♀️
+    {% elif message == 'NOL' %}
+            🙁<br><a href='/help'>report it to me</a>
+        Sorry, your email is not on our list yet. It might take a while to be updated. <a href="/faq#list">Why?</a><br>
+        If you cannot see a different page containing a register form after 24 hours, <a href="/help">contact me</a> I'll update it asap!!
+        If you believe that there is a problem, please report it to me at s2018122@mcs.edu.hk and I'll fix it for you ;)
+    {% elif code == 404 %}
+        This page does not exist maybe because I haven't done it, hee-hee 😬
+    {% else %}
+    🙁<br>
+    {{ message }} Miss {{ session.first }}. <br>
+    If you believe that there is a problem, please <a href='/help'>tell me</a> and I'll fix it for you ;)
+    
+    {% endif %}
+
+
 {% endblock %}

@@ -1,24 +1,52 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Log In
+    Register
 {% endblock %}
 
 {% block main %}
-    <form action="/register" method="post" class="pure-form">
+    {% if user %}
+    <form action="/register" method="post" >
+        <input hidden name="i" value="{{ user['id'] }}">
+        <div>User {% if school %}
+        s{{ user['id'] }}@mcs.edu.hk
+        {% else %}
+        {{ user['id'] }}
+        {% endif %}
+        {{ user['first'] }} {{ user['last'] }},</div>
+        <p>Got your form response! Now you can make a username and password, and you will be logged in.</p>
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="username" onkeyup='forced3("#u", "#p", "#p2")' id='u' placeholder="Username" type="text">
-            <div style='border: none; color:grey;'>    (at most 15 characters without spaces.)</div>
+            <div style='border: none; color:grey;'><label for="u">(at most 15 characters without spaces.)</label></div>
         </div>
         <div class="form-group">
             <input class="form-control" name="password" onkeyup='forced3("#u", "#p", "#p2")' id='p' placeholder="Password" type="password">
-        </div>
+        <div style='border: none; color:grey;'><label for="p">at least 8 characters, for your safety :)</label></div></div>
+
         <div class="form-group">
             <input class="form-control" name="confirmation" onkeyup='forced3("#u", "#p", "#p2")' id='p2' placeholder="Confirm password" type="password">
-        </div>
-        <div id='match' style='display:none' class='form-group'>Passwords don't match</div>
-            <div style='border: none; color:grey;'>Profile Visibility (DEFAULT: public)</div>Private
-            <input type="checkbox" value="PRIV" name="status"><br>
-        <button disabled class="btn button-normal pure-button" type="submit" id='submit'>Register</button>
+            <div style='border: none; color:grey;'><label for='p2'>We do not store plain text passwords. <a href='/faq/#password'>Then what happens?</a></label></div>
+
+        <div id='match' style='display:none' class='form-group'>Passwords don't match</div></div>
+        <button disabled class="btn btn-primary" type="submit" id='submit'>Register</button>
     </form>
+
+    {% else %}
+
+    <div style='display:inline; border-bottom: 2px solid #F06449'>Hey...have you entered your information at the Google Form?</div><br><br>
+    <form action='/register' method='POST'>
+        <h5>If yes, your email:</h5>
+        s<input class="form-control" style='width:20%' name='id' type='text' style="display: inline;">@mcs.edu.hk<br>or<br>
+        <input class="form-control" style='width:30%' name='email' type='text'><br><br>
+        <button class="btn btn-success" type='submit'>Bring me to set up my account!</button>
+        </form><br>
+        <div><h5 class=''>No? Here:</h5>
+        <div class='text-warning'>Current student:<a href='https://forms.gle/7GP6tygsjpP2pCjJ9' target="_blank">https://forms.gle/fWkjcN4Za2w6nwGa9.</a>
+        <br>Other:<a href='https://forms.gle/mbfB5gLdXdL28ozJ7' target="_blank">https://forms.gle/mbfB5gLdXdL28ozJ7</a></div>
+    <!--<div class='text'><iframe style="float:left;" src="https://docs.google.com/forms/d/e/1FAIpQLSer76-sTZaCZ6jkciyZLjVnkt_F-TkrTNmXpihWOYymSbRJkA/viewform?embedded=true" width="auto" height="auto" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <iframe  style="float:right;" src="https://docs.google.com/forms/d/e/1FAIpQLScJ8zoOQGcnTFMy6XtCEWzYfCBvSQcl6kRuL5FQg90nKwzJvg/viewform?embedded=true" width="auto" height="auto" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+</div>--></div>
+
+
+    {% endif %}
 {% endblock %}
